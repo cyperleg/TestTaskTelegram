@@ -8,7 +8,7 @@ import jwt
 from app.user import UserDAL
 from app.schemas import User, APITelegram, HashPassword
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 
 credentials_exception = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
@@ -29,6 +29,7 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
 
 
 async def get_user_by_token(token: Annotated[str, Depends(oauth2_scheme)]) -> User:
+    print(token)
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")

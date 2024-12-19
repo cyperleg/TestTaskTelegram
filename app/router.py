@@ -20,9 +20,9 @@ async def create_user(user: UserIn):
 
 
 @router.post("/token")
-async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> Token:
+async def login_for_access_token(data: UserIn) -> Token:
     try:
-        user = UserDAL.get_user(User(login=form_data.username, password=form_data.password))
+        user = UserDAL.get_user(User(login=data.login, password=data.password))
     except ValueError:
         raise credentials_exception
     access_token = create_access_token(data={"sub": user.login})
