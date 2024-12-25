@@ -28,7 +28,7 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
     return encoded_jwt
 
 
-async def get_user_by_token(token: Annotated[str, Depends(oauth2_scheme)]) -> User:
+async def get_user_by_token(token: str) -> User:
     print(token)
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
